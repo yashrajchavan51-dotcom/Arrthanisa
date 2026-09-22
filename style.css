@@ -94,7 +94,10 @@ h1,h2,h3,h4{
 /* Justified running copy — client request, round 1.
    Captions, labels and anything in a narrow column are excluded
    further down: justifying a 150px column produces rivers. */
-p, .lede, address{
+p, .lede, address,
+.band-lead, .enquiry-lede,
+.founder p, .expertise-card p,
+.info-row p, .empanelment-item .caption{
   text-align:justify;
   text-justify:inter-word;
   hyphens:auto;
@@ -407,7 +410,6 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
   font-size:clamp(17px,1.5vw,20px);
   max-width:56ch;
   margin-bottom:20px;
-  text-align:left; hyphens:manual;
 }
 
 .feature-band{
@@ -431,6 +433,13 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
   max-height:clamp(280px,30vw,420px);
   object-fit:contain;
 }
+/* The About drawing is line art on a white background, so it was
+   showing as a white rectangle sitting on the grey panel. multiply
+   drops the white out and leaves only the pencil lines — no box,
+   no border. Not applied to Vision, which is a photograph. */
+.section--about .feature-band__media img{
+  mix-blend-mode:multiply;
+}
 .feature-band__body{
   display:flex; flex-direction:column; justify-content:center;
   padding:clamp(24px,3.4vw,52px);
@@ -439,7 +448,11 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 .feature-band__body p:last-child{ margin-bottom:0; }
 .feature-band__body em{ color:var(--navy-deep); font-style:italic; }
 
-.section--vision{ padding-top:clamp(24px,3.4vw,44px); }
+/* About and Vision read as one pair, so the join between them is
+   pulled in — the two full .section paddings were stacking up to
+   nearly 150px of dead space. */
+.section--about{ padding-bottom:clamp(16px,2vw,28px); }
+.section--vision{ padding-top:clamp(16px,2vw,28px); }
 
 @media (max-width:880px){
   .feature-band,
@@ -524,8 +537,6 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 .empanelment-item .caption{
   display:block;
   font-size:12.5px; line-height:1.55; color:var(--body);
-  /* captions are never justified — the columns are far too narrow */
-  text-align:center; hyphens:manual;
 }
 @media (max-width:1024px){
   .empanelment-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); }
@@ -785,7 +796,7 @@ body.contact-page > footer{ position:relative; z-index:1; }
   font-size:14px; letter-spacing:.06em; text-transform:uppercase;
   color:var(--ink); margin-bottom:4px;
 }
-.info-row p{ margin:0; font-size:15px; color:var(--body); text-align:left; }
+.info-row p{ margin:0; font-size:15px; color:var(--body); }
 .info-row a{ color:var(--navy-deep); border-bottom:1px solid var(--line-navy); }
 .info-row a:hover{ color:var(--navy); border-bottom-color:var(--navy); }
 
@@ -904,7 +915,6 @@ body.contact-page > footer{ position:relative; z-index:1; }
 .home-footer .since b{ color:var(--navy); font-size:16px; }
 .home-footer address{
   font-style:normal; line-height:1.7; margin-bottom:28px;
-  text-align:left;
 }
 .home-footer address a{ color:var(--body); }
 .home-footer address a:hover{ color:var(--ink); }
