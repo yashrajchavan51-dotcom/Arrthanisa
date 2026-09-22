@@ -464,12 +464,19 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
   max-height:clamp(280px,30vw,420px);
   object-fit:contain;
 }
-/* The About drawing is line art on a white background, so it was
-   showing as a white rectangle sitting on the grey panel. multiply
-   drops the white out and leaves only the pencil lines — no box,
-   no border. Not applied to Vision, which is a photograph. */
+/* The About drawing should read as printed on the page, not pasted on
+   top of it. Two things get it there:
+     · multiply, so the paper multiplies away against whatever is behind
+     · the file itself was levelled so the paper is pure 255. The original
+       scan sat around 240-250, which multiplied to a faint grey rectangle
+       with a hard edge — that edge was the giveaway.
+   The mask then feathers the outer edge so the frame has no boundary at
+   all. Not applied to Vision, which is a photograph. */
 .section--about .feature-band__media img{
   mix-blend-mode:multiply;
+  opacity:.94;
+  -webkit-mask-image:radial-gradient(closest-side, #000 78%, transparent 100%);
+  mask-image:radial-gradient(closest-side, #000 78%, transparent 100%);
 }
 .feature-band__body{
   display:flex; flex-direction:column; justify-content:center;
@@ -805,6 +812,9 @@ body.contact-page .contact-top{ background:transparent; }
   width:100%; height:100%;
   object-fit:cover;
   object-position:center top;
+  /* feathered, so the crop has no visible rectangular edge */
+  -webkit-mask-image:radial-gradient(115% 100% at 70% 30%, #000 52%, transparent 100%);
+  mask-image:radial-gradient(115% 100% at 70% 30%, #000 52%, transparent 100%);
 }
 body.contact-page > main,
 body.contact-page > footer{ position:relative; z-index:1; }
