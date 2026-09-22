@@ -792,7 +792,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 .filter-btn.is-active{ background:var(--gold-deep); border-color:var(--gold-deep); color:var(--white); }
 
 .project-feature{
-  display:grid; grid-template-columns:1fr 1.15fr;
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);
   gap:clamp(24px,3.4vw,48px);
   align-items:center;
   padding:clamp(20px,2.6vw,32px);
@@ -811,7 +811,8 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 .project-feature.is-hidden{ display:none; }
 
 .pf-media{
-  order:2;                 /* images right */
+  order:2;                 /* images right — markup now has the copy first,
+                              so this only matters if the CSS is stale */
   display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr;
   gap:8px; aspect-ratio:16/11;
 }
@@ -833,7 +834,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 .pf-meta h3{ font-size:clamp(20px,2.1vw,26px); margin:6px 0 0; }
 .pf-meta .tag{ display:block; margin-bottom:6px; }
 .pf-specs{
-  display:grid; grid-template-columns:1fr 1fr; gap:16px 24px;
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:16px 24px;
   margin:20px 0; padding:18px 0;
   border-top:1px solid var(--line); border-bottom:1px solid var(--line);
 }
