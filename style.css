@@ -16,30 +16,55 @@
                             13  CTA + footer
    ========================================================= */
 
-/* ---------- 1. font + tokens ---------- */
-/* Absans ships ONE weight (Regular 400) and no italic — the font files
-   confirm it: usWeightClass 400, italicAngle 0. So nothing here asks for
-   a weight or slant Absans can't draw. font-synthesis:none on the body
-   makes that a hard guarantee: a stray font-weight:700 renders as 400
-   rather than being mechanically smeared. */
+/* ---------- 1. font + tokens ----------
+   Four faces, every one a real cut — no synthetic weights anywhere.
+   All subset to Latin + the punctuation the copy uses; 68 KB total,
+   which is less than the single Absans file this replaced.
+
+     Space Grotesk 700  display   headings, <strong>
+     Space Grotesk 600  label     nav, buttons, eyebrows, tags, specs
+     Open Sans 400      text      every paragraph
+     Newsreader Italic  italic    the quote band and inline emphasis
+     Absans (logo cut)  wordmark  ARTHANISA only
+
+   Absans stays on the wordmark because that's brand, not site type —
+   the studio's identity shouldn't change just because the body copy
+   did. It's cut down to the characters a wordmark can use, so it costs
+   4 KB instead of 57. */
 @font-face{
-  font-family:'Absans';
-  src:url('Absans-Regular.woff2') format('woff2'),
-      url('Absans-Regular.woff') format('woff');
+  font-family:'Space Grotesk';
+  src:url('SpaceGrotesk-Bold.woff') format('woff');
+  font-weight:700;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:'Space Grotesk';
+  src:url('SpaceGrotesk-SemiBold.woff') format('woff');
+  font-weight:600;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:'Open Sans';
+  src:url('OpenSans-Regular.woff') format('woff');
   font-weight:400;
   font-style:normal;
   font-display:swap;
 }
-
-/* Every italic on the site is a real italic serif rather than a faked
-   slant: the quote band, and inline emphasis like Arth / Nisa.
-   Subset to Latin + the punctuation the copy uses — 128 KB down to 22 KB. */
 @font-face{
   font-family:'Newsreader Text';
   src:url('NewsreaderText-Italic.woff') format('woff'),
       url('NewsreaderText-Italic.ttf') format('truetype');
   font-weight:400;
   font-style:italic;
+  font-display:swap;
+}
+@font-face{
+  font-family:'Absans Logo';
+  src:url('Absans-Logo.woff') format('woff');
+  font-weight:400;
+  font-style:normal;
   font-display:swap;
 }
 
@@ -77,8 +102,10 @@
   --on-dark-dim:  #8398A8;
   --on-dark-line: rgba(241,245,249,.18);
 
-  --font:       'Absans', system-ui, sans-serif;
-  --font-serif: 'Newsreader Text', Georgia, 'Times New Roman', serif;
+  --font:         'Open Sans', system-ui, sans-serif;          /* running copy */
+  --font-display: 'Space Grotesk', 'Open Sans', sans-serif;    /* headings + labels */
+  --font-serif:   'Newsreader Text', Georgia, 'Times New Roman', serif;
+  --font-logo:    'Absans Logo', 'Space Grotesk', sans-serif;  /* wordmark only */
   --container: 1240px;
   --pad: clamp(24px, 5vw, 72px);
   --ease: cubic-bezier(.22,.61,.36,1);
@@ -110,35 +137,33 @@ p{ margin:0 0 1em; }
 ul{ margin:0; padding:0; list-style:none; }
 button{ font-family:inherit; }
 
-/* Absans has no bold, and asking for one just gets a smeared fake.
-   -webkit-text-stroke expands the real outline instead, which is what
-   a heavier cut actually is — so headings gain weight without losing
-   the letterforms. paint-order keeps the stroke behind the fill so
-   counters (the holes in a, e, o) stay open. */
+/* Real Bold now, so the -webkit-text-stroke trick that stood in for it
+   is gone along with paint-order. font-synthesis:none stays as a guard:
+   if a rule ever asks for a weight that isn't loaded, the browser picks
+   the nearest real cut rather than smearing one. */
 h1,h2,h3,h4{
-  font-family:var(--font);
-  font-weight:400;
-  line-height:1.1;
+  font-family:var(--font-display);
+  font-weight:700;
+  line-height:1.08;
   margin:0 0 .5em;
-  letter-spacing:-0.026em;
+  letter-spacing:-0.03em;
   color:var(--ink);
-  -webkit-text-stroke:0.6px currentColor;
-  paint-order:stroke fill;
 }
-h1{ -webkit-text-stroke-width:0.75px; }
 
-/* small uppercase labels lose the most from a single weight, so they
-   get a lighter dose of the same treatment */
+/* the small uppercase labels — tracked SemiBold, which is where Space
+   Grotesk is at its best */
 .eyebrow, .tag, .btn, .filter-btn,
 .nav-links a, .founder .role, .form-field label,
-.pf-specs dt, .logo-word, .home-footer .since,
-.quote-band__text span, .expertise-num{
-  -webkit-text-stroke:0.32px currentColor;
-  paint-order:stroke fill;
+.pf-specs dt, .pf-specs dd, .home-footer .since,
+.quote-band__text span, .expertise-num, .nav-panel-head,
+.studio-name, .info-row h4, .skip-link{
+  font-family:var(--font-display);
+  font-weight:600;
 }
-/* <b>/<strong> would ask for a bold Absans doesn't have; these places
-   already separate themselves by size and colour */
-b, strong{ font-weight:400; }
+
+/* <strong> borrows the display Bold rather than pulling in a whole
+   Open Sans SemiBold file for two places on the site */
+b, strong{ font-family:var(--font-display); font-weight:700; }
 
 /* all inline italics are the serif */
 em, i{
@@ -274,14 +299,16 @@ p, .lede, address,
 .logo-mark{ width:22px; height:22px; flex:none; }
 .logo-word{
   display:block;
+  font-family:var(--font-logo);
   font-size:20px; letter-spacing:.07em;
   color:var(--ink);
   transition:color .4s var(--ease);
 }
-.logo-word em{ font-family:var(--font); font-size:1em; color:var(--navy);
+.logo-word em{ font-family:var(--font-logo); font-size:1em; color:var(--navy);
   font-style:normal; transition:color .4s var(--ease); }
 .logo-sub{
   display:block;
+  font-family:var(--font-logo);
   font-size:10px; letter-spacing:.18em; text-transform:uppercase;
   color:var(--body); margin-top:2px;
   transition:color .4s var(--ease);
@@ -342,7 +369,7 @@ p, .lede, address,
   border-bottom:1px solid var(--on-dark-line);
 }
 .site-header.is-scrolled .nav-links a{
-  font-size:17px; font-weight:400; text-transform:none;
+  font-size:17px; font-weight:600; text-transform:none;
   letter-spacing:0; padding:7px 0;
   color:var(--on-dark-mute);
 }
@@ -380,7 +407,7 @@ p, .lede, address,
     border-bottom:1px solid var(--on-dark-line);
   }
   .nav-links a{
-    font-size:16px; font-weight:400; text-transform:none;
+    font-size:16px; font-weight:600; text-transform:none;
     letter-spacing:0; padding:7px 0; color:var(--on-dark-mute);
   }
   .nav-links a::after{ display:none; }
@@ -566,7 +593,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
   color:var(--brass-deep);
   hyphens:manual;
 }
-.founder p{ color:var(--body); font-size:15px; }
+.founder p{ color:var(--body); font-size:14.5px; }
 @media (max-width:720px){
   .founders{ grid-template-columns:1fr; }
 }
@@ -655,7 +682,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 }
 .expertise-ico svg{ width:100%; height:100%; }
 .expertise-card h3{ font-size:clamp(17px,1.6vw,20px); color:var(--on-dark); margin-bottom:10px; }
-.expertise-card p{ font-size:13.5px; line-height:1.6; color:var(--on-dark-mute); margin:0; }
+.expertise-card p{ font-size:13px; line-height:1.62; color:var(--on-dark-mute); margin:0; }
 
 @media (max-width:980px){
   .expertise-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }

@@ -6,8 +6,10 @@ WHAT'S IN HERE
 index.html  projects.html  contact.html
 style.css   script.js
 favicon.svg
-Absans-Regular.woff2  Absans-Regular.woff
+SpaceGrotesk-Bold.woff  SpaceGrotesk-SemiBold.woff
+OpenSans-Regular.woff
 NewsreaderText-Italic.woff  NewsreaderText-Italic.ttf
+Absans-Logo.woff
 hero-townhouse.jpg  hero-townhouse-900.jpg
 about-sketch.jpg  vision-pantheon.jpg
 quote-bg.jpg  contact-sketch.jpg
@@ -23,23 +25,28 @@ nothing else is needed.
 
 FONTS
 -----
-Absans has only one weight (Regular 400) and no italic, so every
-font-weight:600/700 and every font-style:italic was being faked by
-the browser. All of those are now removed — hierarchy comes from
-size, colour and letter-spacing, and font-synthesis:none stops the
-browser faking anything ever again.
+Five faces, every one a real cut. No synthetic weights anywhere.
+68 KB total, which is less than the single Absans file it replaced.
 
-Italics are set in Newsreader Text Italic, subset to Latin plus the
-punctuation the copy uses (128 KB -> 22 KB). Used for the Calatrava
-quote and inline emphasis such as Arth / Nisa.
+  Space Grotesk 700   headings, <strong>
+  Space Grotesk 600   nav, buttons, eyebrows, tags, spec labels
+  Open Sans 400       all running copy
+  Newsreader Italic   the quote band and inline emphasis
+  Absans (logo cut)   the ARTHANISA wordmark, nothing else
 
-Optional: I could not produce .woff2 here (no brotli available), so
-the serif ships as .woff. Running it through any woff2 converter and
-adding this line first in the @font-face src would save about 6 KB:
-    url('NewsreaderText-Italic.woff2') format('woff2'),
+Absans stays on the wordmark on purpose: that's brand, not site type.
+It's subset to the characters a wordmark can use, so 57 KB became 4 KB.
+If the logo is redrawn as part of the identity work, this is the one
+place to change.
 
-If a real Absans Medium/SemiBold or Absans Italic ever turns up, send
-it over — the headings would gain some weight back.
+Why the swap: Absans ships only Regular 400 with no italic, so every
+heading was either thin or a browser-faked bold. Space Grotesk is a
+close cousin of Absans with a genuine Bold, so the headings now have
+real weight rather than an outline trick.
+
+Optional: no .woff2 could be produced here (no brotli). Running these
+through any woff2 converter and adding the woff2 line first in each
+@font-face src would save roughly 25%.
 
 
 THREE THINGS STILL TO DO
