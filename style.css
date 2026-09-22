@@ -782,7 +782,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 }
 
 /* ---------- 12. contact ---------- */
-body.contact-page{ position:relative; background:var(--wash-1); overflow-x:hidden; }
+body.contact-page{ position:relative; background:var(--white); overflow-x:hidden; }
 body.contact-page .page-hero,
 body.contact-page .contact-top{ background:transparent; }
 /* A faint technical drawing standing upright against the right edge,
@@ -872,64 +872,89 @@ body.contact-page > footer{ position:relative; z-index:1; }
   .map-wrap iframe{ height:340px; min-height:0; }
 }
 
-/* enquiry band — the dark band on the contact page */
+/* enquiry band — plain ground, hairline fields.
+   Was a navy gradient carrying near-white filled input slabs. On a
+   site that's otherwise white with 1px rules, that read as a separate
+   product. The fields are now underlines: a label, the text, and one
+   hairline beneath it. Nothing boxed, nothing filled. */
 .enquiry-band{
-  background:linear-gradient(162deg, var(--band-deep-2), var(--band-deep));
-  color:var(--on-dark-mute);
+  background:var(--white);
+  border-top:1px solid var(--line);
+  color:var(--body);
   padding:clamp(48px,7vw,88px) 0 clamp(52px,7.5vw,92px);
 }
-.enquiry-band .eyebrow{
-  color:#BCD8EE; font-size:13.5px; letter-spacing:.22em;
-  margin-bottom:18px;
-}
-.enquiry-band .eyebrow::before{ background:#BCD8EE; width:30px; height:2px; }
-.enquiry-band h2{ color:var(--on-dark); font-size:clamp(28px,3.6vw,42px); margin-bottom:12px; }
-.enquiry-lede{ color:var(--on-dark-mute); max-width:52ch; margin-bottom:36px; }
+.enquiry-band .eyebrow{ color:var(--ink); }
+.enquiry-band h2{ color:var(--ink); font-size:clamp(28px,3.6vw,42px); margin-bottom:12px; }
+.enquiry-lede{ color:var(--body); max-width:52ch; margin-bottom:clamp(32px,4vw,48px); }
 
 .enquiry-form{
   display:grid; grid-template-columns:1fr 1fr;
-  gap:22px clamp(20px,2.6vw,36px);
+  gap:clamp(26px,3vw,38px) clamp(28px,4vw,56px);
+  max-width:920px;
 }
 .form-field--wide,
 .form-actions{ grid-column:1 / -1; }
+
 .form-field label{
-  display:block; margin-bottom:8px;
-  font-size:12px; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--navy-bright);
+  display:block; margin-bottom:6px;
+  font-size:11.5px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--body);
   hyphens:manual;
 }
 .form-field input,
 .form-field select,
 .form-field textarea{
-  width:100%;
-  padding:13px 14px;
-  font-family:var(--font); font-size:15px; color:var(--ink);
-  background:#F4F7FA;
-  border:1px solid rgba(241,245,249,.3);
+  display:block; width:100%;
+  padding:8px 2px 10px;
+  font-family:var(--font);
+  font-size:16px;              /* 16px stops iOS zooming in on focus */
+  line-height:1.5;
+  color:var(--ink);
+  background:transparent;
+  border:0;
+  border-bottom:1px solid var(--line);
+  border-radius:0;
   transition:border-color .25s var(--ease), box-shadow .25s var(--ease);
 }
 .form-field input:focus,
 .form-field select:focus,
 .form-field textarea:focus{
   outline:none;
-  border-color:var(--navy-bright);
-  box-shadow:0 0 0 3px rgba(90,151,196,.45);
+  border-bottom-color:var(--navy);
+  /* thickens the rule without shifting anything by half a pixel */
+  box-shadow:0 1px 0 0 var(--navy);
 }
-.form-field textarea{ resize:vertical; min-height:150px; }
+.form-field textarea{
+  resize:vertical; min-height:104px;
+  padding-top:4px;
+}
 .form-field input::placeholder,
-.form-field textarea::placeholder{ color:#7C8896; }
+.form-field textarea::placeholder{ color:#9AA5B1; }
+
+/* the native select chrome would be the one remaining box */
+.form-field select{
+  appearance:none; -webkit-appearance:none;
+  padding-right:26px;
+  cursor:pointer;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9' fill='none'><path d='M1 1l6 6 6-6' stroke='%231D4E73' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat:no-repeat;
+  background-position:right 2px center;
+}
+
+.form-actions{ margin-top:clamp(6px,1vw,14px); }
+
 /* honeypot — hidden from people, bots fill it in */
 .hp-field{
   position:absolute; left:-9999px;
   width:1px; height:1px; overflow:hidden;
 }
 .form-status{
-  margin:16px 0 0; font-size:14px; color:var(--on-dark);
+  margin:18px 0 0; font-size:14px; color:var(--ink);
   text-align:left;
 }
-.form-status a{ color:var(--navy-bright); border-bottom:1px solid currentColor; }
+.form-status a{ color:var(--navy); border-bottom:1px solid currentColor; }
 .form-status[hidden]{ display:none; }
-.form-status--error{ color:#FFC9C0; }
+.form-status--error{ color:#A8271B; }
 
 @media (max-width:680px){
   .enquiry-form{ grid-template-columns:1fr; }
