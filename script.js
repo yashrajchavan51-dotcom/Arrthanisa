@@ -110,9 +110,20 @@ if (filterButtons.length) {
 }
 
 /* ---------- enquiry form (contact.html) ----------
-   Posts for real. If the Web3Forms access key hasn't been pasted in
-   yet, it says so plainly and points the visitor at the email and
-   phone number instead of silently swallowing the message. */
+   Two independent destinations, either or both:
+
+   1. Web3Forms  -> a formatted email to the studio inbox.
+      Paste the access key into contact.html.
+   2. Google Sheet -> one row per enquiry, so there's a permanent,
+      sortable record. Paste the Apps Script /exec URL below.
+      Code and instructions: _setup/
+
+   Whatever is configured gets the submission. If nothing is, the form
+   says so and points the visitor at the email and phone number — it
+   never fakes a success. */
+
+const SHEET_ENDPOINT = '';   // <- paste the Google Apps Script /exec URL, or leave empty
+
 const contactForm = document.querySelector('#contact-form');
 
 if (contactForm) {
@@ -120,7 +131,9 @@ if (contactForm) {
   const submitBtn = contactForm.querySelector('button[type="submit"]');
   const keyField = contactForm.querySelector('input[name="access_key"]');
   const key = keyField ? keyField.value.trim() : '';
-  const isConfigured = key.length > 10 && !/^PASTE-/i.test(key);
+
+  const hasEmail = key.length > 10 && !/^PASTE-/i.test(key);
+  const hasSheet = /^https:\/\/script\.google\.com\//.test(SHEET_ENDPOINT.trim());
 
   const say = (html, isError) => {
     if (!status) return;
@@ -129,42 +142,72 @@ if (contactForm) {
     status.hidden = false;
   };
 
+  const FALLBACK =
+    'Please email <a href="mailto:studio@arthanisa.com">studio@arthanisa.com</a> ' +
+    'or call <a href="tel:+919769619011">+91 97696 19011</a>.';
+
   contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    if (!isConfigured) {
-      say('This form isn&rsquo;t connected yet. Please email ' +
-          '<a href="mailto:studio@arthanisa.com">studio@arthanisa.com</a> ' +
-          'or call <a href="tel:+919769619011">+91 97696 19011</a>.', true);
+    if (!hasEmail && !hasSheet) {
+      say('This form isn&rsquo;t connected yet. ' + FALLBACK, true);
       return;
     }
+
+    const data = new FormData(contactForm);
+
+    // A subject that names the project type and the enquirer, so the
+    // studio inbox can be filtered and scanned without opening anything.
+    const who = (data.get('Full Name') || 'Website visitor').toString().trim();
+    const type = (data.get('Project Type') || '').toString().trim();
+    data.set('subject', `Enquiry${type ? ' — ' + type : ''} — ${who}`);
+
+    // Reply-to the enquirer, so hitting Reply in the inbox just works.
+    const from = (data.get('Email Address') || '').toString().trim();
+    if (from) data.set('replyto', from);
 
     const original = submitBtn.textContent;
     submitBtn.textContent = 'Sending…';
     submitBtn.disabled = true;
     say('Sending your message…');
 
-    try {
-      const res = await fetch(contactForm.action, {
+    const jobs = [];
+
+    if (hasEmail) {
+      jobs.push(fetch(contactForm.action, {
         method: 'POST',
         headers: { Accept: 'application/json' },
-        body: new FormData(contactForm),
-      });
-
-      if (res.ok) {
-        say('Thank you — your message has reached the studio. We&rsquo;ll be in touch within two working days.');
-        contactForm.reset();
-      } else {
-        throw new Error('Request failed: ' + res.status);
-      }
-    } catch (err) {
-      // the message is NOT cleared, so nothing typed is lost
-      say('Something went wrong sending that. Please try again, or email ' +
-          '<a href="mailto:studio@arthanisa.com">studio@arthanisa.com</a> directly.', true);
-    } finally {
-      submitBtn.textContent = original;
-      submitBtn.disabled = false;
+        body: data,
+      }).then((r) => {
+        if (!r.ok) throw new Error('web3forms ' + r.status);
+      }));
     }
+
+    if (hasSheet) {
+      // urlencoded on purpose: a "simple" request, so the browser skips
+      // the CORS preflight that Apps Script would reject.
+      const params = new URLSearchParams();
+      data.forEach((v, k) => { if (k !== 'access_key') params.append(k, v); });
+      jobs.push(fetch(SHEET_ENDPOINT.trim(), { method: 'POST', body: params })
+        .then((r) => { if (!r.ok) throw new Error('sheet ' + r.status); }));
+    }
+
+    const results = await Promise.allSettled(jobs);
+    const anyOk = results.some((r) => r.status === 'fulfilled');
+
+    if (anyOk) {
+      say('Thank you — your message has reached the studio. We&rsquo;ll be in touch within two working days.');
+      contactForm.reset();
+      results.filter((r) => r.status === 'rejected')
+             .forEach((r) => console.warn('Enquiry: one destination failed —', r.reason));
+    } else {
+      // nothing typed is cleared, so the visitor can just press Send again
+      say('Something went wrong sending that. Please try again, or ' + FALLBACK, true);
+      results.forEach((r) => r.status === 'rejected' && console.error('Enquiry failed:', r.reason));
+    }
+
+    submitBtn.textContent = original;
+    submitBtn.disabled = false;
   });
 }
 

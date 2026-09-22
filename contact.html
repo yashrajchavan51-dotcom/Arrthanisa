@@ -19,7 +19,7 @@
 
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preload" href="Absans-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=24">
+<link rel="stylesheet" href="style.css?v=25">
 </head>
 <body class="contact-page">
 
@@ -131,15 +131,21 @@
 </section>
 
 <!-- ================= ENQUIRY FORM =================
-     ⚠️ ONE STEP TO MAKE THIS LIVE ⚠️
-     The old version faked "Message sent" and threw every enquiry away.
-     It now posts to Web3Forms (free, no backend needed, works on
-     GitHub Pages):
-       1. Sign up at https://web3forms.com with studio@arthanisa.com
-       2. Copy the access key you're given
-       3. Paste it into the value="" of the hidden access_key input below
-     Until that key is in place the form will NOT pretend to succeed —
-     it tells the visitor to email or call instead, so no lead is lost. -->
+     LIVE. The Web3Forms key below is registered to
+     yashrajchavan5143@gmail.com, so submissions arrive there. With
+     Web3Forms the recipient is whichever address the key belongs to —
+     there is no "to" field to set here. To add the studio's own inbox,
+     link it as a second address in the Web3Forms dashboard.
+
+     The key is meant to sit in public HTML; that's how the service
+     works. The hidden botcheck field below is what stops bots.
+
+     A Google Sheet log can run alongside this — see
+     _setup/README-form-setup.txt. Not set up yet.
+
+     The field name="" attributes are the labels that appear in the
+     email, which is why they read as plain English rather than
+     "name" / "msg". Don't rename botcheck or access_key. -->
 <section class="enquiry-band">
   <div class="wrap">
     <p class="eyebrow">Send a message</p>
@@ -149,25 +155,27 @@
     <form id="contact-form" class="enquiry-form"
           action="https://api.web3forms.com/submit" method="POST">
 
-      <input type="hidden" name="access_key" value="PASTE-YOUR-WEB3FORMS-ACCESS-KEY-HERE">
-      <input type="hidden" name="subject" value="New enquiry from the Arthanisa website">
+      <input type="hidden" name="access_key" value="dd272ea1-6050-4b28-8205-952ae84c1215">
       <input type="hidden" name="from_name" value="Arthanisa website">
+      <!-- fallback subject; script.js replaces it with one that names
+           the project type and the enquirer, so the inbox sorts itself -->
+      <input type="hidden" name="subject" value="New enquiry from the Arthanisa website">
 
       <div class="form-field">
         <label for="name">Full name</label>
-        <input type="text" id="name" name="name" autocomplete="name" required>
+        <input type="text" id="name" name="Full Name" autocomplete="name" required>
       </div>
       <div class="form-field">
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" autocomplete="email" required>
+        <input type="email" id="email" name="Email Address" autocomplete="email" required>
       </div>
       <div class="form-field">
         <label for="phone">Phone</label>
-        <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel">
+        <input type="tel" id="phone" name="Phone Number" autocomplete="tel" inputmode="tel">
       </div>
       <div class="form-field">
         <label for="project">Project type</label>
-        <select id="project" name="project">
+        <select id="project" name="Project Type">
           <option value="">Please choose…</option>
           <option>Residential</option>
           <option>Commercial</option>
@@ -178,7 +186,7 @@
       </div>
       <div class="form-field form-field--wide">
         <label for="message">Tell us about the project</label>
-        <textarea id="message" name="message" required></textarea>
+        <textarea id="message" name="Message" required></textarea>
       </div>
 
       <!-- spam trap: hidden from people, filled in by bots -->
@@ -224,6 +232,6 @@
   </div>
 </footer>
 
-<script src="script.js?v=19"></script>
+<script src="script.js?v=25"></script>
 </body>
 </html>

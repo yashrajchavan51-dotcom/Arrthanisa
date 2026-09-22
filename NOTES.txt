@@ -13,6 +13,10 @@ about-sketch.jpg  vision-pantheon.jpg
 quote-bg.jpg  contact-sketch.jpg
 logo-mcgm.png  logo-tmc.png  logo-pwd.png  logo-mhada.png  logo-mbpa.png
 
+_setup/  (not part of the website — setup instructions and the
+          Google Apps Script code. Harmless if uploaded, but you
+          can leave it out.)
+
 This is the complete site. Upload the whole folder as-is —
 nothing else is needed.
 
@@ -46,13 +50,20 @@ THREE THINGS STILL TO DO
    Open Graph and canonical tags must be absolute URLs, or
    WhatsApp/LinkedIn link previews come out blank.
 
-2. Make the enquiry form live:
-   - sign up at https://web3forms.com using studio@arthanisa.com
-   - copy the access key
-   - paste it into the value="" of the hidden access_key input
-     in contact.html (search for PASTE-YOUR-WEB3FORMS-ACCESS-KEY)
-   Until then the form does NOT fake success — it tells the
-   visitor to email or call instead, so no enquiry is lost.
+2. Make the enquiry form live. Full walkthrough in
+   _setup/README-form-setup.txt. Two destinations, either or both:
+     A. Web3Forms   -> formatted email to yashrajchavan5143@gmail.com
+                       (register the key against THAT address — the
+                        recipient is the account email, not an HTML
+                        field — then paste it into contact.html)
+     B. Google Sheet -> one row per enquiry, permanent and sortable
+                       (paste the Apps Script /exec URL into script.js;
+                        code is in _setup/google-sheet-Code.gs, with
+                        NOTIFY_TO already set to
+                        yashrajchavan5143@gmail.com)
+   Until one of them is configured the form does NOT fake success —
+   it tells the visitor to email or call instead, so no enquiry is
+   lost.
 
 3. Social profile URLs for the footer (Instagram, Facebook,
    LinkedIn). Currently href="#" placeholders in all three files.
