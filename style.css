@@ -624,21 +624,35 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 }
 .quote-band__text{
   position:relative; z-index:1;
-  max-width:640px; padding:44px 24px 0;
-  text-align:center;
+  width:fit-content;
+  max-width:min(640px, 84%);
+  padding:clamp(26px,3vw,38px) clamp(30px,3.6vw,46px);
+  text-align:left;
+}
+/* two corner brackets framing the quote diagonally — top-left and
+   bottom-right — the way the reference sets it. There was only a
+   ::before, so a single bracket floated above the centred text. */
+.quote-band__text::before,
+.quote-band__text::after{
+  content:"";
+  position:absolute;
+  width:clamp(20px,2vw,28px); height:clamp(20px,2vw,28px);
+  border-style:solid;
+  border-color:rgba(255,255,255,.6);
 }
 .quote-band__text::before{
-  content:""; position:absolute; top:0; left:50%;
-  transform:translateX(-50%);
-  width:26px; height:26px;
-  border-top:2px solid rgba(255,255,255,.55);
-  border-left:2px solid rgba(255,255,255,.55);
+  top:0; left:0;
+  border-width:2px 0 0 2px;
+}
+.quote-band__text::after{
+  bottom:0; right:0;
+  border-width:0 2px 2px 0;
 }
 .quote-band__text p{
   margin:0;
   font-style:italic; font-size:clamp(19px,2.4vw,29px); line-height:1.4;
   color:#F1F5F9;
-  text-align:center; hyphens:manual;
+  text-align:left; hyphens:manual;
 }
 .quote-band__text span{
   display:block; margin-top:16px;
