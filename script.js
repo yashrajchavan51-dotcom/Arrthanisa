@@ -214,6 +214,31 @@ if (contactForm) {
   });
 }
 
+/* ---------- section headings ----------
+   Each heading's brass bar draws out when it scrolls into view. The
+   html.js class is already set by a one-line script in <head>, so the
+   bars never flash at full width before this runs, and they stay put
+   if this file fails to load. */
+const headings = document.querySelectorAll(
+  '.band-title, .page-hero h1, .enquiry-band h2, .cta-band h2'
+);
+
+if (headings.length) {
+  if ('IntersectionObserver' in window) {
+    const headingIO = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('heading-in');
+          headingIO.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
+    headings.forEach((h) => headingIO.observe(h));
+  } else {
+    headings.forEach((h) => h.classList.add('heading-in'));
+  }
+}
+
 /* ---------- footer year ---------- */
 const yearEl = document.querySelector('#year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();

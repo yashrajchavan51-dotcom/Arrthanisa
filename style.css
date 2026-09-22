@@ -501,23 +501,33 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
   color:var(--ink);
   margin-bottom:clamp(16px,1.8vw,22px);
 }
-.band-title .dots{ color:var(--gold-mid); letter-spacing:.06em; margin-left:2px; }
+/* Every section heading closes on a brass bar — the one mark tying
+   About, Vision, Team, Empanelment, Expertise, the page heroes and the
+   two call-to-action bands together. No extra words, no dots.
 
-/* Every section heading closes on a short brass bar. It's the one mark
-   that ties About, Vision, Team, Empanelment, Expertise, the page heroes
-   and the two call-to-action bands into a single system — before this,
-   Empanelment was a bare <h2> with nothing on it at all. */
+   The bar draws itself out from nothing when the heading scrolls into
+   view. The width:0 start is scoped to html.js (set by a one-line
+   script in <head>) so with JavaScript off the bars are simply there at
+   full width rather than invisible. */
 .band-title::after,
 .page-hero h1::after,
 .enquiry-band h2::after,
 .cta-band h2::after{
   content:"";
   display:block;
-  width:clamp(46px,5vw,70px);
-  height:3px;
+  width:clamp(56px,6vw,88px);
+  height:4px;
   margin-top:clamp(13px,1.5vw,19px);
   background:linear-gradient(90deg, var(--gold-mid), var(--gold));
 }
+html.js .band-title::after,
+html.js .page-hero h1::after,
+html.js .enquiry-band h2::after,
+html.js .cta-band h2::after{
+  width:0;
+  transition:width .75s var(--ease);
+}
+html.js .heading-in::after{ width:clamp(56px,6vw,88px); }
 /* centred sections centre their bar too */
 .team-title::after,
 .cta-band h2::after{ margin-left:auto; margin-right:auto; }
@@ -684,7 +694,6 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
   padding-top:clamp(40px,5.5vw,76px);
 }
 .section--expertise .band-title{ color:var(--on-dark); }
-.section--expertise .band-title .dots{ color:var(--gold); }
 .section--expertise .band-lead{ color:var(--on-dark-mute); }
 
 .expertise-grid{
@@ -1134,4 +1143,8 @@ body.contact-page > footer{ position:relative; z-index:1; }
     scroll-behavior:auto !important;
   }
   .quote-band{ background-attachment:scroll; }
+  html.js .band-title::after,
+  html.js .page-hero h1::after,
+  html.js .enquiry-band h2::after,
+  html.js .cta-band h2::after{ width:clamp(56px,6vw,88px); transition:none; }
 }
