@@ -45,14 +45,22 @@
 
 :root{
   /* type */
-  --ink:          #16202B;   /* headings */
-  --body:         #5A6673;   /* running copy */
-  --body-strong:  #2A3340;
+  --ink:          #0E1720;   /* headings — deeper than before */
+  --body:         #3F4B59;   /* running copy — was #5A6673, which read washy */
+  --body-strong:  #222C38;
 
   /* accents — one hue family, three weights */
-  --navy:         #1D4E73;   /* ~7:1 on white — safe for text/icons */
-  --navy-deep:    #163C58;
-  --navy-bright:  #5A97C4;   /* ~2.9:1 on white — DARK GROUNDS ONLY */
+  --navy:         #16496F;   /* ~8:1 on white — safe for text/icons */
+  --navy-deep:    #103352;
+  --navy-bright:  #6FADD9;   /* low contrast on white — DARK GROUNDS ONLY */
+
+  /* brass — the second accent, for the small marks that carry the
+     brand's warmth: rules, tags, roles, numerals, italics.
+     --brass is for display sizes and dark grounds (3.6:1 on white,
+     fine for large or decorative use). --brass-deep is the one to use
+     for anything small on white (5.6:1). Don't mix them up. */
+  --brass:        #BA8A2E;   /* 3.1:1 on white (large text / rules only), 4.8:1 on the dark band */
+  --brass-deep:   #8A5F14;   /* 5.6:1 on white — use this for any SMALL text */
 
   /* grounds */
   --white:        #FFFFFF;
@@ -102,12 +110,31 @@ p{ margin:0 0 1em; }
 ul{ margin:0; padding:0; list-style:none; }
 button{ font-family:inherit; }
 
+/* Absans has no bold, and asking for one just gets a smeared fake.
+   -webkit-text-stroke expands the real outline instead, which is what
+   a heavier cut actually is — so headings gain weight without losing
+   the letterforms. paint-order keeps the stroke behind the fill so
+   counters (the holes in a, e, o) stay open. */
 h1,h2,h3,h4{
   font-family:var(--font);
   font-weight:400;
-  line-height:1.12;
+  line-height:1.1;
   margin:0 0 .5em;
-  letter-spacing:-0.022em;   /* tracking carries the display sizes now */
+  letter-spacing:-0.026em;
+  color:var(--ink);
+  -webkit-text-stroke:0.6px currentColor;
+  paint-order:stroke fill;
+}
+h1{ -webkit-text-stroke-width:0.75px; }
+
+/* small uppercase labels lose the most from a single weight, so they
+   get a lighter dose of the same treatment */
+.eyebrow, .tag, .btn, .filter-btn,
+.nav-links a, .founder .role, .form-field label,
+.pf-specs dt, .logo-word, .home-footer .since,
+.quote-band__text span, .expertise-num{
+  -webkit-text-stroke:0.32px currentColor;
+  paint-order:stroke fill;
 }
 /* <b>/<strong> would ask for a bold Absans doesn't have; these places
    already separate themselves by size and colour */
@@ -117,7 +144,8 @@ b, strong{ font-weight:400; }
 em, i{
   font-family:var(--font-serif);
   font-style:italic;
-  font-size:1.04em;          /* optical match — the serif sets a touch smaller */
+  font-size:1.05em;          /* optical match — the serif sets a touch smaller */
+  color:var(--brass-deep);
 }
 
 /* Justified running copy — client request, round 1.
@@ -163,24 +191,24 @@ p, .lede, address,
 .eyebrow{
   display:flex; align-items:center; gap:10px;
   font-size:12px; letter-spacing:.22em; text-transform:uppercase;
-  color:var(--ink);
+  color:var(--navy);
   margin:0 0 16px;
   text-align:left; hyphens:manual;
 }
 .eyebrow::before{
-  content:""; width:22px; height:1px; flex:none;
-  background:var(--navy);
+  content:""; width:26px; height:2px; flex:none;
+  background:var(--brass);
 }
 
 .lede{
-  font-size:clamp(16px,1.35vw,19px);
+  font-size:clamp(17px,1.45vw,20px);
   color:var(--body);
   max-width:62ch;
 }
 
 .tag{
   font-size:11px; letter-spacing:.16em; text-transform:uppercase;
-  color:var(--navy);
+  color:var(--brass-deep);
   hyphens:manual;
 }
 
@@ -196,17 +224,20 @@ p, .lede, address,
              border-color .3s var(--ease), transform .25s var(--ease),
              box-shadow .25s var(--ease);
 }
+.btn{ border-color:var(--navy); color:var(--navy); }
 .btn:hover{
-  background:var(--ink); border-color:var(--ink); color:var(--white);
-  transform:translateY(-2px); box-shadow:0 6px 16px rgba(0,0,0,.14);
+  background:var(--navy); border-color:var(--navy); color:var(--white);
+  transform:translateY(-2px); box-shadow:0 8px 18px rgba(22,73,111,.28);
 }
 
 /* solid fill — only used on dark grounds, where an outline vanishes */
 .btn--solid{
   background:var(--navy); border-color:var(--navy); color:var(--white);
 }
+.btn--solid{ color:var(--white); }
 .btn--solid:hover{
-  background:var(--navy-deep); border-color:var(--navy-deep); color:var(--white);
+  background:var(--brass-deep); border-color:var(--brass-deep); color:var(--white);
+  transform:translateY(-2px); box-shadow:0 8px 18px rgba(138,95,20,.32);
 }
 
 /* ---------- 3. header / nav ----------
@@ -419,7 +450,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
   background:var(--wash-1);
 }
 .page-hero h1{
-  font-size:clamp(32px,4.6vw,56px);
+  font-size:clamp(36px,5.2vw,64px);
   color:var(--ink);
   max-width:20ch;
 }
@@ -430,11 +461,11 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
    block with the drawing on one side and the copy on the other,
    matching the reference. --flip mirrors the pair. */
 .band-title{
-  font-size:clamp(26px,3.2vw,38px);
+  font-size:clamp(30px,3.9vw,46px);
   color:var(--ink);
   margin-bottom:10px;
 }
-.band-title .dots{ color:var(--navy); letter-spacing:.06em; margin-left:2px; }
+.band-title .dots{ color:var(--brass); letter-spacing:.06em; margin-left:2px; }
 .band-lead{
   color:var(--navy-deep);
   font-size:clamp(17px,1.5vw,20px);
@@ -484,7 +515,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 }
 .feature-band__body p{ color:var(--body); margin-bottom:1em; }
 .feature-band__body p:last-child{ margin-bottom:0; }
-.feature-band__body em{ color:var(--navy-deep); font-style:italic; }
+.feature-band__body em{ color:var(--brass-deep); font-style:italic; }
 
 /* About and Vision read as one pair, so the join between them is
    pulled in — the two full .section paddings were stacking up to
@@ -506,7 +537,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 .team-title{ text-align:center; margin-bottom:0; }
 .title-rule{
   display:block; width:clamp(90px,9vw,130px); height:2px;
-  background:var(--line);
+  background:var(--brass);
   margin:22px auto clamp(28px,3.4vw,48px);
 }
 .founders{
@@ -518,7 +549,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
   width:100%; max-width:220px; aspect-ratio:1/1;
   margin:0 auto 24px;
   border-radius:50%; overflow:hidden;
-  border:4px solid var(--navy);
+  border:4px solid var(--brass);
   background:var(--wash-2);
   position:relative;
 }
@@ -532,7 +563,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 .founder .role{
   display:block; margin-bottom:16px;
   font-size:12px; letter-spacing:.16em; text-transform:uppercase;
-  color:var(--navy);
+  color:var(--brass-deep);
   hyphens:manual;
 }
 .founder p{ color:var(--body); font-size:15px; }
@@ -548,7 +579,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
    laptop and never moves relative to its caption. */
 .section--empanelment{ background:var(--wash-2); }
 .section--empanelment h2{
-  font-size:clamp(24px,3vw,34px);
+  font-size:clamp(27px,3.4vw,40px);
   max-width:20ch;
 }
 .empanelment-grid{
@@ -593,7 +624,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
   padding-top:clamp(40px,5.5vw,76px);
 }
 .section--expertise .band-title{ color:var(--on-dark); }
-.section--expertise .band-title .dots{ color:var(--navy-bright); }
+.section--expertise .band-title .dots{ color:var(--brass); }
 .section--expertise .band-lead{ color:var(--on-dark-mute); }
 
 .expertise-grid{
@@ -613,14 +644,14 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
   position:absolute; top:clamp(20px,2.2vw,28px); right:clamp(18px,2vw,26px);
   display:flex; align-items:center; justify-content:center;
   width:26px; height:26px; border-radius:50%;
-  border:1px solid rgba(241,245,249,.3);
+  border:1px solid rgba(186,138,46,.5);
   font-size:11px; line-height:1; font-variant-numeric:tabular-nums;
-  color:var(--navy-bright);
+  color:var(--brass);
 }
 .expertise-ico{
   display:block; margin-bottom:26px;
   width:clamp(44px,4.4vw,56px); height:clamp(44px,4.4vw,56px);
-  color:var(--navy-bright);
+  color:var(--brass);
 }
 .expertise-ico svg{ width:100%; height:100%; }
 .expertise-card h3{ font-size:clamp(17px,1.6vw,20px); color:var(--on-dark); margin-bottom:10px; }
@@ -676,7 +707,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
   position:absolute;
   width:clamp(20px,2vw,28px); height:clamp(20px,2vw,28px);
   border-style:solid;
-  border-color:rgba(255,255,255,.6);
+  border-color:var(--brass);
 }
 .quote-band__text::before{
   top:0; left:0;
@@ -696,7 +727,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 .quote-band__text span{
   display:block; margin-top:16px;
   font-size:12px; letter-spacing:.18em; text-transform:uppercase;
-  color:rgba(255,255,255,.78);
+  color:var(--brass);
 }
 @media (hover:none), (max-width:860px){
   .quote-band{ background-attachment:scroll; }
@@ -717,8 +748,8 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
   cursor:pointer;
   transition:background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease);
 }
-.filter-btn:hover{ border-color:var(--ink); color:var(--ink); }
-.filter-btn.is-active{ background:var(--ink); border-color:var(--ink); color:var(--white); }
+.filter-btn:hover{ border-color:var(--navy); color:var(--navy); }
+.filter-btn.is-active{ background:var(--navy); border-color:var(--navy); color:var(--white); }
 
 .project-feature{
   display:grid; grid-template-columns:1.15fr 1fr;
@@ -893,8 +924,8 @@ body.contact-page > footer{ position:relative; z-index:1; }
   color:var(--body);
   padding:clamp(48px,7vw,88px) 0 clamp(52px,7.5vw,92px);
 }
-.enquiry-band .eyebrow{ color:var(--ink); }
-.enquiry-band h2{ color:var(--ink); font-size:clamp(28px,3.6vw,42px); margin-bottom:12px; }
+.enquiry-band .eyebrow{ color:var(--navy); }
+.enquiry-band h2{ color:var(--ink); font-size:clamp(30px,4vw,48px); margin-bottom:12px; }
 .enquiry-lede{ color:var(--body); max-width:52ch; margin-bottom:clamp(32px,4vw,48px); }
 
 .enquiry-form{
@@ -977,10 +1008,10 @@ body.contact-page > footer{ position:relative; z-index:1; }
   padding:clamp(56px,8vw,96px) 0;
   text-align:center;
 }
-.cta-band .eyebrow{ justify-content:center; color:var(--navy-bright); }
-.cta-band .eyebrow::before{ background:var(--navy-bright); }
+.cta-band .eyebrow{ justify-content:center; color:var(--brass); }
+.cta-band .eyebrow::before{ background:var(--brass); }
 .cta-band h2{
-  color:var(--on-dark); font-size:clamp(28px,3.6vw,44px);
+  color:var(--on-dark); font-size:clamp(30px,4vw,50px);
   max-width:24ch; margin:0 auto 24px;
 }
 .cta-actions{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
@@ -998,12 +1029,12 @@ body.contact-page > footer{ position:relative; z-index:1; }
   padding-bottom:28px; margin-bottom:28px;
   border-bottom:1px solid var(--line);
 }
-.footer-head h2{ font-size:clamp(24px,3vw,32px); color:var(--ink); margin:0; }
+.footer-head h2{ font-size:clamp(27px,3.4vw,38px); color:var(--ink); margin:0; }
 .home-footer .since{
   font-size:13px; letter-spacing:.08em; text-transform:uppercase;
   white-space:nowrap;
 }
-.home-footer .since b{ color:var(--navy); font-size:16px; font-variant-numeric:tabular-nums; }
+.home-footer .since b{ color:var(--brass-deep); font-size:17px; font-variant-numeric:tabular-nums; }
 .home-footer address{
   font-style:normal; line-height:1.7; margin-bottom:28px;
 }
