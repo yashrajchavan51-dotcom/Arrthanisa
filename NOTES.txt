@@ -7,6 +7,7 @@ index.html  projects.html  contact.html
 style.css   script.js
 favicon.svg
 Absans-Regular.woff2  Absans-Regular.woff
+NewsreaderText-Italic.woff  NewsreaderText-Italic.ttf
 hero-townhouse.jpg  hero-townhouse-900.jpg
 about-sketch.jpg  vision-pantheon.jpg
 quote-bg.jpg  contact-sketch.jpg
@@ -14,6 +15,27 @@ logo-mcgm.png  logo-tmc.png  logo-pwd.png  logo-mhada.png  logo-mbpa.png
 
 This is the complete site. Upload the whole folder as-is —
 nothing else is needed.
+
+
+FONTS
+-----
+Absans has only one weight (Regular 400) and no italic, so every
+font-weight:600/700 and every font-style:italic was being faked by
+the browser. All of those are now removed — hierarchy comes from
+size, colour and letter-spacing, and font-synthesis:none stops the
+browser faking anything ever again.
+
+Italics are set in Newsreader Text Italic, subset to Latin plus the
+punctuation the copy uses (128 KB -> 22 KB). Used for the Calatrava
+quote and inline emphasis such as Arth / Nisa.
+
+Optional: I could not produce .woff2 here (no brotli available), so
+the serif ships as .woff. Running it through any woff2 converter and
+adding this line first in the @font-face src would save about 6 KB:
+    url('NewsreaderText-Italic.woff2') format('woff2'),
+
+If a real Absans Medium/SemiBold or Absans Italic ever turns up, send
+it over — the headings would gain some weight back.
 
 
 THREE THINGS STILL TO DO

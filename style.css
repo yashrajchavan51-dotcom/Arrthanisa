@@ -17,12 +17,29 @@
    ========================================================= */
 
 /* ---------- 1. font + tokens ---------- */
+/* Absans ships ONE weight (Regular 400) and no italic — the font files
+   confirm it: usWeightClass 400, italicAngle 0. So nothing here asks for
+   a weight or slant Absans can't draw. font-synthesis:none on the body
+   makes that a hard guarantee: a stray font-weight:700 renders as 400
+   rather than being mechanically smeared. */
 @font-face{
   font-family:'Absans';
   src:url('Absans-Regular.woff2') format('woff2'),
       url('Absans-Regular.woff') format('woff');
   font-weight:400;
   font-style:normal;
+  font-display:swap;
+}
+
+/* Every italic on the site is a real italic serif rather than a faked
+   slant: the quote band, and inline emphasis like Arth / Nisa.
+   Subset to Latin + the punctuation the copy uses — 128 KB down to 22 KB. */
+@font-face{
+  font-family:'Newsreader Text';
+  src:url('NewsreaderText-Italic.woff') format('woff'),
+      url('NewsreaderText-Italic.ttf') format('truetype');
+  font-weight:400;
+  font-style:italic;
   font-display:swap;
 }
 
@@ -52,7 +69,8 @@
   --on-dark-dim:  #8398A8;
   --on-dark-line: rgba(241,245,249,.18);
 
-  --font: 'Absans', system-ui, sans-serif;
+  --font:       'Absans', system-ui, sans-serif;
+  --font-serif: 'Newsreader Text', Georgia, 'Times New Roman', serif;
   --container: 1240px;
   --pad: clamp(24px, 5vw, 72px);
   --ease: cubic-bezier(.22,.61,.36,1);
@@ -74,6 +92,8 @@ body{
   font-weight:400;
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
+  font-synthesis:none;
+  -webkit-font-synthesis:none;   /* older Safari */
 }
 
 img{ max-width:100%; display:block; }
@@ -84,10 +104,20 @@ button{ font-family:inherit; }
 
 h1,h2,h3,h4{
   font-family:var(--font);
-  font-weight:600;
+  font-weight:400;
   line-height:1.12;
   margin:0 0 .5em;
-  letter-spacing:-0.01em;
+  letter-spacing:-0.022em;   /* tracking carries the display sizes now */
+}
+/* <b>/<strong> would ask for a bold Absans doesn't have; these places
+   already separate themselves by size and colour */
+b, strong{ font-weight:400; }
+
+/* all inline italics are the serif */
+em, i{
+  font-family:var(--font-serif);
+  font-style:italic;
+  font-size:1.04em;          /* optical match — the serif sets a touch smaller */
 }
 
 /* Justified running copy — client request, round 1.
@@ -133,7 +163,7 @@ p, .lede, address,
 .eyebrow{
   display:flex; align-items:center; gap:10px;
   font-size:12px; letter-spacing:.22em; text-transform:uppercase;
-  font-weight:600; color:var(--ink);
+  color:var(--ink);
   margin:0 0 16px;
   text-align:left; hyphens:manual;
 }
@@ -149,8 +179,8 @@ p, .lede, address,
 }
 
 .tag{
-  font-size:11px; letter-spacing:.14em; text-transform:uppercase;
-  font-weight:600; color:var(--navy);
+  font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--navy);
   hyphens:manual;
 }
 
@@ -160,7 +190,7 @@ p, .lede, address,
   border:1px solid var(--ink);
   color:var(--ink);
   font-size:13px; letter-spacing:.08em; text-transform:uppercase;
-  font-weight:600; background:transparent; cursor:pointer;
+  background:transparent; cursor:pointer;
   text-align:center; hyphens:manual;
   transition:background .3s var(--ease), color .3s var(--ease),
              border-color .3s var(--ease), transform .25s var(--ease),
@@ -213,11 +243,12 @@ p, .lede, address,
 .logo-mark{ width:22px; height:22px; flex:none; }
 .logo-word{
   display:block;
-  font-size:20px; letter-spacing:.06em; font-weight:500;
+  font-size:20px; letter-spacing:.07em;
   color:var(--ink);
   transition:color .4s var(--ease);
 }
-.logo-word em{ color:var(--navy); font-style:normal; transition:color .4s var(--ease); }
+.logo-word em{ font-family:var(--font); font-size:1em; color:var(--navy);
+  font-style:normal; transition:color .4s var(--ease); }
 .logo-sub{
   display:block;
   font-size:10px; letter-spacing:.18em; text-transform:uppercase;
@@ -230,8 +261,8 @@ p, .lede, address,
 .nav-links{ display:flex; align-items:center; gap:30px; }
 .nav-links a{
   position:relative; display:block; padding:4px 0;
-  font-size:13px; letter-spacing:.06em; text-transform:uppercase;
-  font-weight:600; color:var(--navy);
+  font-size:13px; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--navy);
   transition:color .3s var(--ease);
 }
 .nav-links a::after{
@@ -493,8 +524,8 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 .founder h3{ font-size:23px; margin-bottom:4px; }
 .founder .role{
   display:block; margin-bottom:16px;
-  font-size:12px; letter-spacing:.14em; text-transform:uppercase;
-  font-weight:600; color:var(--navy);
+  font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--navy);
   hyphens:manual;
 }
 .founder p{ color:var(--body); font-size:15px; }
@@ -576,7 +607,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
   display:flex; align-items:center; justify-content:center;
   width:26px; height:26px; border-radius:50%;
   border:1px solid rgba(241,245,249,.3);
-  font-size:11px; font-weight:600; line-height:1;
+  font-size:11px; line-height:1; font-variant-numeric:tabular-nums;
   color:var(--navy-bright);
 }
 .expertise-ico{
@@ -650,7 +681,8 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 }
 .quote-band__text p{
   margin:0;
-  font-style:italic; font-size:clamp(19px,2.4vw,29px); line-height:1.4;
+  font-family:var(--font-serif);
+  font-style:italic; font-size:clamp(21px,2.7vw,33px); line-height:1.36;
   color:#F1F5F9;
   text-align:left; hyphens:manual;
 }
@@ -673,8 +705,8 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 .filter-btn{
   padding:10px 20px;
   border:1px solid var(--line-navy); background:transparent;
-  font-size:12px; letter-spacing:.1em; text-transform:uppercase;
-  font-weight:600; color:var(--body-strong);
+  font-size:12px; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--body-strong);
   cursor:pointer;
   transition:background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease);
 }
@@ -729,7 +761,8 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
   font-size:11px; letter-spacing:.12em; text-transform:uppercase;
   color:var(--body); margin-bottom:4px; hyphens:manual;
 }
-.pf-specs dd{ margin:0; font-size:15px; font-weight:500; color:var(--ink); hyphens:manual; }
+.pf-specs dd{ margin:0; font-size:15px; color:var(--ink); hyphens:manual;
+  font-variant-numeric:tabular-nums; }
 .pf-meta .loc{ font-size:13px; color:var(--body); hyphens:manual; }
 
 /* shown when a filter matches nothing, instead of a blank page */
@@ -846,8 +879,8 @@ body.contact-page > footer{ position:relative; z-index:1; }
   padding:clamp(48px,7vw,88px) 0 clamp(52px,7.5vw,92px);
 }
 .enquiry-band .eyebrow{
-  color:#BCD8EE; font-size:13.5px; letter-spacing:.2em;
-  font-weight:700; margin-bottom:18px;
+  color:#BCD8EE; font-size:13.5px; letter-spacing:.22em;
+  margin-bottom:18px;
 }
 .enquiry-band .eyebrow::before{ background:#BCD8EE; width:30px; height:2px; }
 .enquiry-band h2{ color:var(--on-dark); font-size:clamp(28px,3.6vw,42px); margin-bottom:12px; }
@@ -862,7 +895,7 @@ body.contact-page > footer{ position:relative; z-index:1; }
 .form-field label{
   display:block; margin-bottom:8px;
   font-size:12px; letter-spacing:.1em; text-transform:uppercase;
-  font-weight:600; color:var(--navy-bright);
+  color:var(--navy-bright);
   hyphens:manual;
 }
 .form-field input,
@@ -935,7 +968,7 @@ body.contact-page > footer{ position:relative; z-index:1; }
   font-size:13px; letter-spacing:.08em; text-transform:uppercase;
   white-space:nowrap;
 }
-.home-footer .since b{ color:var(--navy); font-size:16px; }
+.home-footer .since b{ color:var(--navy); font-size:16px; font-variant-numeric:tabular-nums; }
 .home-footer address{
   font-style:normal; line-height:1.7; margin-bottom:28px;
 }
