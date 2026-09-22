@@ -38,6 +38,22 @@ one dark band per page is a warm near-black brown (#241A0C), not the
 old navy. Type is warm black (--ink #181206) over warm grey
 (--body #4B4437).
 
+Section grounds step through the palette so no page is one flat sheet:
+
+  Home      hero photo -> About (white) -> Vision (white)
+            -> Team (cream) -> Empanelment (sand)
+            -> Expertise (DARK) -> Quote (photo) -> Footer (sand)
+  Projects  hero (white) -> list (cream, white cards)
+            -> CTA (DARK) -> Footer (sand)
+  Contact   hero + address (white) -> Enquiry (cream) -> Footer (sand)
+
+About and Vision are deliberately left plain white.
+
+The header bar is wider than the 1240px content column (capped at
+1680px) so the logo and nav reach the edges instead of sitting in an
+inset block. It carries a 3px gold rule along the very top on every
+page — the one constant brand mark.
+
 Rule of thumb: --gold-mid at display sizes, --gold-deep below ~20px.
 Everything currently on the site passes WCAG AA for its size.
 

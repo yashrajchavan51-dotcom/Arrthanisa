@@ -268,13 +268,17 @@ p, .lede, address,
 }
 
 /* ---------- 3. header / nav ----------
+   The bar is wider than the content column on purpose: logo hard left,
+   nav hard right, the way it reads on the reference site. A 3px gold
+   rule across the very top is the brand's one constant on every page.
    Wide screens: full menu row while you're at the top of the page,
    collapsing to a toggle + dropdown once scrolled.
    Narrow screens: toggle + dropdown from the start. */
 .site-header{
   position:fixed; top:0; left:0; right:0; z-index:100;
-  padding:22px 0;
+  padding:20px 0;
   background:transparent;
+  border-top:3px solid var(--gold-mid);
   border-bottom:1px solid transparent;
   transition:background .4s var(--ease), padding .4s var(--ease),
              border-color .4s var(--ease);
@@ -287,7 +291,10 @@ p, .lede, address,
   border-bottom-color:var(--line-gold);
 }
 .site-header .wrap{
-  display:flex; align-items:center; justify-content:space-between; gap:20px;
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+  /* wider than --container, so the logo and nav reach the edges */
+  max-width:1680px;
+  padding:0 clamp(20px,3.2vw,56px);
 }
 
 .logo{ display:flex; align-items:center; gap:14px; flex:none; z-index:101; }
@@ -316,9 +323,9 @@ p, .lede, address,
   transition:color .4s var(--ease);
 }
 
-.nav-menu{ position:relative; display:flex; align-items:center; gap:26px; }
+.nav-menu{ position:relative; display:flex; align-items:center; gap:clamp(24px,2.8vw,40px); }
 
-.nav-links{ display:flex; align-items:center; gap:30px; }
+.nav-links{ display:flex; align-items:center; gap:clamp(26px,3.2vw,50px); }
 .nav-links a{
   position:relative; display:block; padding:4px 0;
   font-size:13px; letter-spacing:.11em; text-transform:uppercase;
@@ -475,8 +482,8 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 /* ---------- 5. page hero (inner pages) ---------- */
 .page-hero{
   position:relative;
-  padding:clamp(118px,14vw,150px) 0 clamp(20px,3vw,32px);
-  background:var(--wash-1);
+  padding:clamp(122px,14vw,154px) 0 clamp(26px,3.4vw,40px);
+  background:var(--white);
 }
 .page-hero h1{
   font-size:clamp(36px,5.2vw,64px);
@@ -565,7 +572,8 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 }
 
 /* ---------- 7. team ---------- */
-.section--team{ background:var(--white); padding-top:clamp(24px,3vw,42px); }
+.section--team{ background:var(--wash-1); padding-top:clamp(34px,4vw,58px);
+  padding-bottom:clamp(38px,4.6vw,66px); }
 .team-title{ text-align:center; margin-bottom:0; }
 .title-rule{
   display:block; width:clamp(90px,9vw,130px); height:2px;
@@ -829,7 +837,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 }
 .pf-specs dt{
   font-size:11px; letter-spacing:.12em; text-transform:uppercase;
-  color:var(--body); margin-bottom:4px; hyphens:manual;
+  color:var(--gold-deep); margin-bottom:4px; hyphens:manual;
 }
 .pf-specs dd{ margin:0; font-size:15px; color:var(--ink); hyphens:manual;
   font-variant-numeric:tabular-nums; }
@@ -895,8 +903,8 @@ body.contact-page > footer{ position:relative; z-index:1; }
 .contact-card{
   padding:clamp(26px,3.2vw,42px);
   background:var(--white);
-  border:1px solid var(--line);
-  border-top:3px solid var(--gold-deep);
+  border:1px solid var(--line-gold);
+  border-top:3px solid var(--gold-mid);
   box-shadow:0 3px 16px rgba(40,30,10,.07);
 }
 .contact-card .studio-name{
@@ -915,9 +923,8 @@ body.contact-page > footer{ position:relative; z-index:1; }
   flex:none;
   display:flex; align-items:center; justify-content:center;
   width:40px; height:40px; border-radius:50%;
-  background:var(--white);
+  background:var(--wash-1);
   border:1px solid var(--line-gold);
-  box-shadow:0 2px 8px rgba(0,0,0,.07);
   color:var(--gold-deep);
 }
 .info-ico .ico{ width:17px; height:17px; }
@@ -931,7 +938,7 @@ body.contact-page > footer{ position:relative; z-index:1; }
 
 .map-wrap{
   height:100%; min-height:440px;
-  border:1px solid var(--line);
+  border:1px solid var(--line-gold);
   background:var(--white);
   overflow:hidden;
 }
@@ -951,8 +958,8 @@ body.contact-page > footer{ position:relative; z-index:1; }
    product. The fields are now underlines: a label, the text, and one
    hairline beneath it. Nothing boxed, nothing filled. */
 .enquiry-band{
-  background:var(--white);
-  border-top:1px solid var(--line);
+  background:var(--wash-1);
+  border-top:1px solid var(--line-gold);
   color:var(--body);
   padding:clamp(48px,7vw,88px) 0 clamp(52px,7.5vw,92px);
 }
@@ -1050,16 +1057,16 @@ body.contact-page > footer{ position:relative; z-index:1; }
 .cta-band .btn--solid:hover{ background:var(--gold); border-color:var(--gold); color:var(--band-deep); }
 
 .home-footer{
-  background:var(--wash-1);
+  background:var(--wash-2);
   color:var(--body);
-  border-top:1px solid var(--line-gold);
+  border-top:3px solid var(--gold-mid);
   padding:clamp(48px,7vw,80px) 0 28px;
 }
 .footer-head{
   display:flex; justify-content:space-between; align-items:baseline;
   flex-wrap:wrap; gap:16px;
   padding-bottom:28px; margin-bottom:28px;
-  border-bottom:1px solid var(--line);
+  border-bottom:1px solid var(--line-gold);
 }
 .footer-head h2{ font-size:clamp(27px,3.4vw,38px); color:var(--ink); margin:0; }
 .home-footer .since{
