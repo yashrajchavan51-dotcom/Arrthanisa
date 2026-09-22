@@ -71,11 +71,15 @@ const filterButtons = document.querySelectorAll('.filter-btn');
 if (filterButtons.length) {
   const projectCards = document.querySelectorAll('.project-feature');
   const emptyState = document.querySelector('#projects-empty');
+  // whichever button is first in the markup is the landing view
+  const DEFAULT_FILTER = filterButtons[0].dataset.filter;
 
-  const applyFilter = (filter) => {
+  // updateUrl is false on first load, so arriving at projects.html
+  // doesn't immediately rewrite the address bar with ?filter=...
+  const applyFilter = (filter, updateUrl) => {
     let shown = 0;
     projectCards.forEach((card) => {
-      const match = filter === 'all' || card.dataset.cat === filter;
+      const match = card.dataset.cat === filter;
       card.classList.toggle('is-hidden', !match);
       if (match) shown++;
     });
@@ -89,10 +93,9 @@ if (filterButtons.length) {
     });
 
     // keep the address bar in step so a filtered view can be shared
-    const url = filter === 'all'
-      ? location.pathname
-      : `${location.pathname}?filter=${filter}`;
-    history.replaceState(null, '', url);
+    if (updateUrl) {
+      history.replaceState(null, '', `${location.pathname}?filter=${filter}`);
+    }
 
     document.querySelectorAll('.nav-subitem a').forEach((a) => {
       a.classList.toggle('is-active', a.getAttribute('href').endsWith(`filter=${filter}`));
@@ -100,13 +103,13 @@ if (filterButtons.length) {
   };
 
   filterButtons.forEach((btn) => {
-    btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
+    btn.addEventListener('click', () => applyFilter(btn.dataset.filter, true));
   });
 
   const requested = new URLSearchParams(location.search).get('filter');
   const valid = requested &&
     Array.from(filterButtons).some((b) => b.dataset.filter === requested);
-  applyFilter(valid ? requested : 'all');
+  applyFilter(valid ? requested : DEFAULT_FILTER, false);
 }
 
 /* ---------- enquiry form (contact.html) ----------
