@@ -39,7 +39,6 @@
 
   /* grounds */
   --white:        #FFFFFF;
-  --panel:        #F0F3F5;   /* the About / Vision block */
   --wash-1:       #EFF4F9;   /* pale blueprint wash */
   --wash-2:       #E4ECF3;   /* deeper stone wash */
   --band-deep:    #102A3E;   /* the one dark band per page */
@@ -416,7 +415,8 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
   display:grid;
   grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);
   align-items:center;
-  background:var(--panel);
+  gap:clamp(28px,4vw,64px);
+  background:transparent;
   border:0;
 }
 .feature-band--flip{ grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr); }
@@ -425,7 +425,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 
 .feature-band__media{
   display:flex; align-items:center; justify-content:center;
-  padding:clamp(20px,3vw,44px);
+  padding:0;
   background:transparent;
 }
 .feature-band__media img{
@@ -442,7 +442,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 }
 .feature-band__body{
   display:flex; flex-direction:column; justify-content:center;
-  padding:clamp(24px,3.4vw,52px);
+  padding:0;
 }
 .feature-band__body p{ color:var(--body); margin-bottom:1em; }
 .feature-band__body p:last-child{ margin-bottom:0; }
@@ -451,15 +451,16 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 /* About and Vision read as one pair, so the join between them is
    pulled in — the two full .section paddings were stacking up to
    nearly 150px of dead space. */
-.section--about{ padding-bottom:clamp(16px,2vw,28px); }
-.section--vision{ padding-top:clamp(16px,2vw,28px); }
+.section--about{ padding-bottom:clamp(22px,2.8vw,40px); }
+.section--vision{ padding-top:clamp(22px,2.8vw,40px); }
 
 @media (max-width:880px){
   .feature-band,
   .feature-band--flip{ grid-template-columns:1fr; }
   .feature-band--flip .feature-band__media{ order:1; }
   .feature-band--flip .feature-band__body{ order:2; }
-  .feature-band__media img{ max-height:260px; }
+  .feature-band__media img{ max-height:280px; }
+  .feature-band{ gap:clamp(20px,4vw,32px); }
 }
 
 /* ---------- 7. team ---------- */
