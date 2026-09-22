@@ -23,6 +23,29 @@ This is the complete site. Upload the whole folder as-is —
 nothing else is needed.
 
 
+PALETTE — GOLD AND WHITE
+------------------------
+One accent, four weights, with strict rules. Gold on white is the
+easiest thing to make illegible, so:
+
+  --gold         #CFA43A   bright. DARK GROUNDS ONLY (2.3:1 on white)
+  --gold-mid     #A87F18   rules, borders, display-size marks on white
+  --gold-deep    #7A5A0F   any SMALL text on white, and solid fills
+  --gold-darkest #5C420A   hover beneath a --gold-deep fill
+
+Grounds are warm creams (--wash-1 #FAF6EC, --wash-2 #F4ECDA) and the
+one dark band per page is a warm near-black brown (#241A0C), not the
+old navy. Type is warm black (--ink #181206) over warm grey
+(--body #4B4437).
+
+Rule of thumb: --gold-mid at display sizes, --gold-deep below ~20px.
+Everything currently on the site passes WCAG AA for its size.
+
+The logo mark SVG is inline in all three HTML files and now strokes
+#A87F18. If the wordmark is redrawn during the identity work, that's
+the value to match.
+
+
 FONTS
 -----
 Five faces, every one a real cut. No synthetic weights anywhere.
