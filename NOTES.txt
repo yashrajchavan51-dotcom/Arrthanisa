@@ -1,0 +1,67 @@
+ARTHANISA DESIGN STUDIO — site files (revision 19)
+==================================================
+
+WHAT'S IN HERE
+--------------
+index.html  projects.html  contact.html
+style.css   script.js
+favicon.svg
+Absans-Regular.woff2  Absans-Regular.woff
+hero-townhouse.jpg  hero-townhouse-900.jpg
+about-sketch.jpg  vision-pantheon.jpg
+quote-bg.jpg  contact-sketch.jpg
+logo-mcgm.png  logo-tmc.png  logo-pwd.png  logo-mhada.png  logo-mbpa.png
+
+This is the complete site. Upload the whole folder as-is —
+nothing else is needed.
+
+
+THREE THINGS STILL TO DO
+------------------------
+1. Find-and-replace  https://REPLACE-WITH-YOUR-DOMAIN
+   with the real live address, in all three HTML files.
+   (Flagged in a comment at the top of each file.)
+   Open Graph and canonical tags must be absolute URLs, or
+   WhatsApp/LinkedIn link previews come out blank.
+
+2. Make the enquiry form live:
+   - sign up at https://web3forms.com using studio@arthanisa.com
+   - copy the access key
+   - paste it into the value="" of the hidden access_key input
+     in contact.html (search for PASTE-YOUR-WEB3FORMS-ACCESS-KEY)
+   Until then the form does NOT fake success — it tells the
+   visitor to email or call instead, so no enquiry is lost.
+
+3. Social profile URLs for the footer (Instagram, Facebook,
+   LinkedIn). Currently href="#" placeholders in all three files.
+
+Also: the Privacy policy / Terms links were removed rather than
+left pointing at "#!". The markup to restore them is commented
+in place in the footer. A short privacy notice is worth writing
+soon, since the form collects name, email and phone.
+
+
+OLD FILES TO DELETE FROM THE LIVE SITE
+--------------------------------------
+about-sketch.png    -> replaced by about-sketch.jpg
+logo-pwd.jpg        -> replaced by logo-pwd.png
+logo-mbpa.jpg       -> replaced by logo-mbpa.png
+hero-skyline.png    -> was never referenced by any page
+hero-towers.jpg     -> was never referenced by any page
+
+
+STILL PLACEHOLDER CONTENT (needs the client)
+--------------------------------------------
+- Every project on projects.html is placeholder data. Names,
+  years, sizes, statuses and photographs all need replacing.
+  The empty .pf-tile boxes are where photos go:
+      <div class="pf-tile"><img src="..." alt="..."></div>
+- No project is tagged data-cat="liaison", which is why that
+  filter shows the empty-state message.
+- Founder portraits are initials. Put an <img> inside
+  .founder-photo and the CSS will crop it to the circle.
+- The Expertise copy was written from the four services named
+  in the About text. Swap it for the real services list.
+- Confirm the wording and attribution of the Calatrava quote.
+- Confirm all five empanelments in writing, and check that the
+  studio is allowed to use the government emblems.
