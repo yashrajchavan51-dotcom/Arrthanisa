@@ -792,7 +792,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 .filter-btn.is-active{ background:var(--gold-deep); border-color:var(--gold-deep); color:var(--white); }
 
 .project-feature{
-  display:grid; grid-template-columns:1.15fr 1fr;
+  display:grid; grid-template-columns:1fr 1.15fr;
   gap:clamp(24px,3.4vw,48px);
   align-items:center;
   padding:clamp(20px,2.6vw,32px);
@@ -811,6 +811,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 .project-feature.is-hidden{ display:none; }
 
 .pf-media{
+  order:2;                 /* images right */
   display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr;
   gap:8px; aspect-ratio:16/11;
 }
@@ -828,6 +829,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
   content:""; position:absolute; inset:14px;
   border:1px solid var(--line); pointer-events:none;
 }
+.pf-meta{ order:1; }      /* copy left */
 .pf-meta h3{ font-size:clamp(20px,2.1vw,26px); margin:6px 0 0; }
 .pf-meta .tag{ display:block; margin-bottom:6px; }
 .pf-specs{
@@ -856,7 +858,7 @@ body.home .site-header:not(.is-scrolled) .logo-sub{
 
 @media (max-width:780px){
   .project-feature{ grid-template-columns:1fr; }
-  .pf-media{ order:-1; }
+  .pf-media{ order:-1; }   /* stacked: photo first, copy under it */
 }
 
 /* ---------- 12. contact ---------- */
